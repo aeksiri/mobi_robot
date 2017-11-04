@@ -1,0 +1,15 @@
+<launch>
+    <!-- Run Mobi_robot compatible laser drivers -->
+    <include file="$(find mobi_robot)/launch/laser.launch" />
+
+    <!-- Map server -->
+    <arg name="map_file" default="$(find mobi_robot)/maps/house.yaml"/>
+    <node pkg="map_server" name="map_server"  type="map_server" args="$(arg map_file)" />
+
+    <!-- AMCL used for localization -->
+    <include file="$(find mobi_robot)/launch/amcl.launch" />
+    
+    <!-- Calls navigation stack packages for compatible Mobi_robot base -->
+    <!-- Takes reference from env variable MOBIBASE. ie. export MOBIBASE=2wd -->
+    <include file="$(find mobi_robot)/launch/move_base/move_base_$(env MOBIBASE).launch" />
+</launch>
